@@ -5,10 +5,12 @@ import java.util.*;
 public class LaptopStore {
     private Set<Laptop> laptops;
     private Random random;
+    boolean choiceMatched;
 
     public LaptopStore() {
         laptops = new HashSet<>();
         random = new Random();
+        choiceMatched = false;
     }
 
     public void generateLaptops(int count) {
@@ -50,16 +52,16 @@ public class LaptopStore {
             System.out.println("0 - Завершить ввод критериев.");
             System.out.print("Введите цифру, соответствующую необходимому критерию: ");
 
-            int criterion = scanner.nextInt();
+            int choice = scanner.nextInt();
             scanner.nextLine();
 
             System.out.println();
 
-            if (criterion == 0) {
+            if (choice == 0) {
                 break;
             }
 
-            switch (criterion) {
+            switch (choice) {
                 case 1:
                     System.out.print("Введите минимальное значение ОЗУ: ");
                     int ram = scanner.nextInt();
@@ -97,20 +99,29 @@ public class LaptopStore {
 
     public Set<Laptop> filterLaptops(Map<String, Object> filters) {
         Set<Laptop> filteredLaptops = new HashSet<>(laptops);
+
         for (Laptop laptop : laptops) {
+            boolean matches = true;
+
             if (filters.containsKey("ram") && laptop.getRam() < (int) filters.get("ram")) {
-                filteredLaptops.remove(laptop);
+                matches = false;
             }
             if (filters.containsKey("hdd") && laptop.getHdd() < (int) filters.get("hdd")) {
-                filteredLaptops.remove(laptop);
+                matches = false;
             }
             if (filters.containsKey("os") && !laptop.getOs().equalsIgnoreCase((String) filters.get("os"))) {
-                filteredLaptops.remove(laptop);
+                matches = false;
             }
             if (filters.containsKey("color") && !laptop.getColor().equalsIgnoreCase((String) filters.get("color"))) {
-                filteredLaptops.remove(laptop);
+                matches = false;
             }
             if (filters.containsKey("model") && !laptop.getModel().equalsIgnoreCase((String) filters.get("model"))) {
+                matches = false;
+            }
+
+            if (matches) {
+                choiceMatched = true;
+            } else {
                 filteredLaptops.remove(laptop);
             }
         }
@@ -118,9 +129,13 @@ public class LaptopStore {
     }
 
     public void displayFilteredLaptops(Set<Laptop> filteredLaptops) {
-        System.out.println("Ноутбуки, соответствующие критериям: ");
-        for (Laptop laptop : filteredLaptops) {
-            System.out.println(laptop);
+        if (!choiceMatched) {
+            System.out.println("Ноутбуки, ссоответствующие критериям - отсутсвуют.");
+        } else {
+            System.out.println("Ноутбуки, соответствующие критериям: ");
+            for (Laptop laptop : filteredLaptops) {
+                System.out.println(laptop);
+            }
         }
     }
 }
