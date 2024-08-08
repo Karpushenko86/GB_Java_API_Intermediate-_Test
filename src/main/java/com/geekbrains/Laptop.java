@@ -39,12 +39,12 @@ public class Laptop {
 
     @Override
     public String toString() {
-        return "Laptop{" +
-                "model='" + model + '\'' +
-                ", ram=" + ram +
-                ", hdd=" + hdd +
-                ", os='" + os + '\'' +
-                ", color='" + color + '\'' +
+        return "Ноутбук {" +
+                "Модель = '" + model + '\'' +
+                ", ОЗУ = " + ram +
+                ", ЖД = " + hdd +
+                ", ОС = '" + os + '\'' +
+                ", Цвет = '" + color + '\'' +
                 '}';
     }
 
