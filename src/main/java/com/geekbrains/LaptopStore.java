@@ -4,13 +4,36 @@ import java.util.*;
 
 public class LaptopStore {
     private Set<Laptop> laptops;
+    private Random random;
 
     public LaptopStore() {
         laptops = new HashSet<>();
+        random = new Random();
     }
 
-    public void addLaptop(Laptop laptop) {
-        laptops.add(laptop);
+    public void generateLaptops(int count) {
+        String[] modelsOptions = {"HP", "Lenovo", "Asus", "Huawei", "MSI", "Apple"};
+        int[] ramOptions = {4, 8, 16, 32, 64, 128};
+        int[] hddOptions = {128, 256, 512, 1024, 2048};
+        String[] osOptions = {"Без ОС", "Windows 10", "Windows 11", "Linux"};
+        String[] colorOptions = {"Black", "White", "Gray", "Dark Gray", "Blue", "Dark Blue"};
+
+        for (int i = 0; i < count; i++) {
+            String model = modelsOptions[random.nextInt(modelsOptions.length)] + "-" + (i + 1);
+            int ram = ramOptions[random.nextInt(ramOptions.length)];
+            int hddMemory = hddOptions[random.nextInt(hddOptions.length)];
+            String os = osOptions[random.nextInt(osOptions.length)];
+            String color = colorOptions[random.nextInt(colorOptions.length)];
+
+            laptops.add(new Laptop(model, ram, hddMemory, os, color));
+        }
+    }
+
+    public void displayAllLaptops() {
+        System.out.println("Все доступные ноутбуки в магазине(" + laptops.size() + "):");
+        for (Laptop laptop : laptops) {
+            System.out.println(laptop);
+        }
     }
 
     public Map<String, Object> getCriteriaFromUser() {
@@ -18,50 +41,57 @@ public class LaptopStore {
         Map<String, Object> criteria = new HashMap<>();
 
         while (true) {
-            System.out.println("Введите цифру, соответствующую необходимому критерию: ");
-            System.out.println("1 - ОЗУ");
-            System.out.println("2 - Объем ЖД");
-            System.out.println("3 - Операционная система");
-            System.out.println("4 - Цвет");
-            System.out.println("5 - Модель");
-            System.out.println("6 - Завершить ввод критериев");
+            System.out.println("\nДоступные критерии для сортировки: ");
+            System.out.println("1 - ОЗУ (от 4 до 128)");
+            System.out.println("2 - Объем ЖД (от 128 до 2048)");
+            System.out.println("3 - Операционная система (Без ОС, Windows 10, Windows 11, Linux)");
+            System.out.println("4 - Цвет (Black, White, Gray, Dark Gray, Blue, Dark Blue)");
+            System.out.println("5 - Модель (HP, Lenovo, Asus, Huawei, MSI, Apple)");
+            System.out.println("0 - Завершить ввод критериев.");
+            System.out.print("Введите цифру, соответствующую необходимому критерию: ");
 
             int criterion = scanner.nextInt();
             scanner.nextLine();
 
-            if (criterion == 6) {
+            System.out.println();
+
+            if (criterion == 0) {
                 break;
             }
 
             switch (criterion) {
                 case 1:
                     System.out.print("Введите минимальное значение ОЗУ: ");
-                    criteria.put("ram", scanner.nextInt());
+                    int ram = scanner.nextInt();
                     scanner.nextLine();
+                    criteria.put("ram", ram);
                     break;
                 case 2:
                     System.out.print("Введите минимальное значение объема ЖД: ");
-                    criteria.put("hdd", scanner.nextInt());
+                    int hdd = scanner.nextInt();
                     scanner.nextLine();
+                    criteria.put("hdd", hdd);
                     break;
                 case 3:
                     System.out.print("Введите операционную систему: ");
-                    criteria.put("os", scanner.nextLine());
+                    String os = scanner.nextLine();
+                    criteria.put("os", os);
                     break;
                 case 4:
                     System.out.print("Введите цвет: ");
-                    criteria.put("color", scanner.nextLine());
+                    String color = scanner.nextLine();
+                    criteria.put("color", color);
                     break;
                 case 5:
                     System.out.print("Введите модель: ");
-                    criteria.put("model", scanner.nextLine());
+                    String model = scanner.nextLine();
+                    criteria.put("model", model);
                     break;
                 default:
-                    System.out.println("Неверный выбор");
+                    System.out.println("Неверный выбор!");
                     break;
             }
         }
-
         return criteria;
     }
 
@@ -87,24 +117,10 @@ public class LaptopStore {
         return filteredLaptops;
     }
 
-    public void displayFilteredLaptops(Set<Laptop> laptops) {
+    public void displayFilteredLaptops(Set<Laptop> filteredLaptops) {
         System.out.println("Ноутбуки, соответствующие критериям: ");
-        for (Laptop laptop : laptops) {
+        for (Laptop laptop : filteredLaptops) {
             System.out.println(laptop);
         }
-    }
-
-    public static void main(String[] args) {
-        LaptopStore store = new LaptopStore();
-
-        store.addLaptop(new Laptop("MSI Katana", 8, 256, "Windows", "Black"));
-        store.addLaptop(new Laptop("Lenovo Legion 5", 16, 512, "Linux", "Silver"));
-        store.addLaptop(new Laptop("Apple MacBook Pro 2", 32, 1024, "MacOS", "White"));
-        store.addLaptop(new Laptop("Asus Tuf Gaming A15", 8, 256, "Windows", " Dark Gray"));
-
-        Map<String, Object> criteria = store.getCriteriaFromUser();
-
-        Set<Laptop> filteredLaptops = store.filterLaptops(criteria);
-        store.displayFilteredLaptops(filteredLaptops);
     }
 }
