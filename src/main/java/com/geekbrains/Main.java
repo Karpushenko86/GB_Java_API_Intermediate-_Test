@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         LaptopStore store = new LaptopStore();
 
-        store.generateLaptops(10);
+        store.generateLaptops(5);
 
         store.displayAllLaptops();
 
