@@ -42,7 +42,7 @@
 - Set<Laptop> filterLaptops(Map<String, Object> filters) — Фильтрация ноутбуков по заданным критериям.
 - void displayFilteredLaptops(Set<Laptop> laptops) — Вывод отфильтрованных ноутбуков.
 
-## Класс Main.
+## Класс Main:
 
 Методы класса:
 - public static void main(String[] args) — Точка входа в программу. Выполняет генерацию ноутбуков, запрос критериев фильтрации у пользователя, фильтрацию ноутбуков и вывод результата работы программы.
