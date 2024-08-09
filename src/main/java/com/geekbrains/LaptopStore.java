@@ -5,7 +5,7 @@ import java.util.*;
 public class LaptopStore {
     private Set<Laptop> laptops;
     private Random random;
-    boolean choiceMatched;
+    private boolean choiceMatched;
 
     public LaptopStore() {
         laptops = new HashSet<>();
